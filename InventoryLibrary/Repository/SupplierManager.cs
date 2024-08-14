@@ -25,8 +25,8 @@ namespace InventoryManagementSystem.Repository
         {
             if (IsSupplierNameExists(name))
                 throw new DuplicateItemException("Supplier name already exists. Please use a different name.");
-            if (_context.Suppliers.Any(p => p.InventoryId != inventoryId))
-                throw new ItemNotFoundException("Inventory Not Found");
+            if (_context.Inventories.FirstOrDefault(i => i.InventoryId == inventoryId) == null)
+                throw new ItemNotFoundException("Inventory not found. Please provide a valid inventory ID.");
             Supplier supplier = new Supplier(name,description , inventoryId);
             _context.Suppliers.Add(supplier);
             _context.SaveChanges();

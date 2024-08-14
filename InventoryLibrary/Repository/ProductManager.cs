@@ -25,8 +25,9 @@ namespace InventoryManagementSystem.Repository
         {
             if (IsProductNameExists(name))
                 throw new DuplicateItemException("Product name already exists. Please use a different name.");
-            if (_context.Products.Any(p => p.InventoryId != inventoryId))
-                throw new ItemNotFoundException("Inventory Not Found");
+            if(_context.Inventories.FirstOrDefault(i=> i.InventoryId == inventoryId) == null)
+                throw new ItemNotFoundException("Inventory not found. Please provide a valid inventory ID."); 
+
             Product product = Product.CreateProduct(name , desc , quantity , price , inventoryId);
             _context.Products.Add(product);
             _context.SaveChanges();
