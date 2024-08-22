@@ -80,13 +80,13 @@ namespace InventoryManagementSystem.Controller
             {
                 Console.WriteLine(ex.Message);
             }
-            catch (FormatException)
-            {
-                Console.WriteLine("Invalid input.");
-            }
-            catch (Exception ex) { 
-                Console.WriteLine(ex.Message);
-            }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+                catch (Exception ex) { 
+                    Console.WriteLine(ex.Message);
+                }
             
         }
 

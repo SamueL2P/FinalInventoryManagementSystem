@@ -34,5 +34,14 @@ namespace InventoryManagementSystem.Repository
             return inventory;
         }
 
+        public List<Inventory> GetAllInventories()  
+        {
+            return _context.Inventories
+                           .Include(i => i.Products)
+                           .Include(i => i.Suppliers)
+                           .Include(i => i.Transactions)
+                           .ToList();
+        }
+
     }
 }

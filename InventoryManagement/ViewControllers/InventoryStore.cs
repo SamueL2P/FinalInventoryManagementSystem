@@ -15,21 +15,19 @@ namespace InventoryManagementSystem.ViewControllers
     {
         public static void DisplayMenu()
         {
-
             while (true)
             {
-
                 Console.WriteLine("\nWelcome to Inventory Management System developed by : Samuel\n" +
                     "1. Product Management\n" +
                     "2. Supplier Management\n" +
                     "3. Transaction Management\n" +
-                    "4. Generate Report\n" +
-                    "5. Exit");
+                    "4. Generate Report by Inventory\n" +
+                    "5. Generate Complete Report\n" +  // Add this line
+                    "6. Exit");
                 try
                 {
                     int choice = Convert.ToInt32(Console.ReadLine());
                     ChooseMenu(choice);
-
                 }
                 catch (DuplicateItemException ex)
                 {
@@ -51,8 +49,6 @@ namespace InventoryManagementSystem.ViewControllers
                 {
                     Console.WriteLine(ex.Message);
                 }
-
-
             }
         }
 
@@ -64,7 +60,7 @@ namespace InventoryManagementSystem.ViewControllers
                     ProductStore.DisplayProduct();
                     break;
                 case 2:
-                    SupplierStore.DisplaySupplier(); 
+                    SupplierStore.DisplaySupplier();
                     break;
                 case 3:
                     TransactionStore.DisplayTransaction();
@@ -74,18 +70,17 @@ namespace InventoryManagementSystem.ViewControllers
                     int inventoryId = Convert.ToInt32(Console.ReadLine());
                     GenerateReport(inventoryId);
                     break;
-
                 case 5:
+                    DisplayAllInventories();  
+                    break;
+                case 6:
                     Environment.Exit(0);
                     break;
-               
                 default:
                     throw new Exception("Please enter a valid input!");
-
             }
         }
 
-       
         static void GenerateReport(int inventoryId)
         {
             InventoryManager inventoryManager = new InventoryManager(new Services.InventoryContext());
@@ -100,9 +95,26 @@ namespace InventoryManagementSystem.ViewControllers
                 Console.WriteLine(ex.Message);
             }
         }
+
+        static void DisplayAllInventories()  
+        {
+            InventoryManager inventoryManager = new InventoryManager(new Services.InventoryContext());
+            List<Inventory> inventories = inventoryManager.GetAllInventories();
+
+            if (inventories != null && inventories.Count > 0)
+            {
+                inventories.ForEach(inventory => DisplayInventory(inventory));
+            }
+            else
+            {
+                Console.WriteLine("No inventories found.");
+            }
+        }
+
+
         static void DisplayInventory(Inventory inventory)
         {
-            Console.WriteLine($"Inventory ID: {inventory.InventoryId}   Inventory Location: {inventory.InventoryLocation}");
+            Console.WriteLine($"\nInventory ID: {inventory.InventoryId}   Inventory Location: {inventory.InventoryLocation}");
 
             Console.WriteLine("\n================= Products ================");
             if (inventory.Products != null && inventory.Products.Count > 0)
